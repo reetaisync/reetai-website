@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReetAI // Enterprise Financial Middleware & Ingestion Layers</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&family=JetBrains+Mono:wght=400;500&display=swap" rel="stylesheet">
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fafafa; color: #0f172a; scroll-behavior: smooth; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+        .enterprise-card { background: #ffffff; border: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02); }
+        .input-box { border: 1px solid #e2e8f0; background: #ffffff; transition: all 0.2s ease; }
+        .input-box:focus { border-color: #0f172a; outline: none; box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.05); }
+        
+        /* Interactive grid card selection states */
+        .ledger-radio:checked + .ledger-label {
+            border-color: #4f46e5;
+            background-color: #f5f3ff;
+            box-shadow: 0 0 0 1px #4f46e5;
+        }
+    </style>
+        
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PQH8Y6CLEB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PQH8Y6CLEB', { 'anonymize_ip': true });
+    </script>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden antialiased selection:bg-slate-900/10">
+
+    <header class="w-full max-w-7xl mx-auto px-8 py-8 flex justify-between items-center border-b border-slate-200/60 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-extrabold tracking-tight text-slate-900">Reet<span class="text-indigo-600">AI</span></span>
+            <span class="text-[10px] font-mono tracking-widest px-2 py-0.5 rounded bg-slate-100 text-slate-500 border border-slate-200">v1.0 PLATFORM</span>
+        </div>
+        <nav class="hidden md:flex space-x-12 text-xs font-semibold uppercase tracking-widest text-slate-400">
+            <a href="#overview" class="text-slate-900 transition-colors">01 / Overview</a>
+            <a href="#simulator" class="hover:text-slate-900 transition-colors">02 / API Simulator</a>
+            <a href="#pricing" class="hover:text-slate-900 transition-colors">03 / Pricing</a>
+        </nav>
+        
+        <div class="flex items-center space-x-4">
+            <a href="https://calendly.com/reetai-sync/30min" target="_blank" class="hidden sm:inline-block text-xs font-bold uppercase tracking-wider px-5 py-3.5 rounded-full border border-slate-200 text-slate-700 hover:bg-slate-50 transition duration-150">
+                Talk to an Expert
+            </a>
+            <div id="auth-container" class="relative inline-block text-left">
+                <button id="auth-btn" onclick="handleAuthClick()" class="text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition duration-150 shadow-md"> 
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-8 py-16 flex flex-col space-y-24">
+        
+        <div id="overview" class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-6">
+            <div class="lg:col-span-7 space-y-6">
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-indigo-600 block">Unified Ingestion Layer Integration</span>
+                <h1 id="main-hero-headline" class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
+                    QuickBooks API<br>Integration Platform.
+                </h1>
+                <p id="main-hero-subtext" class="text-slate-500 text-sm leading-relaxed font-normal max-w-xl">
+                    Build QuickBooks integrations in minutes, not months. One API layer platform to sync transaction ledger arrays, automate data extraction mappings, and write records seamlessly with absolute structural integrity.
+                </p>
+                <div class="flex flex-wrap gap-4 text-xs font-mono text-slate-400">
+                    <span class="flex items-center space-x-1.5"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> <span>25+ Unified Data Models</span></span>
+                    <span class="flex items-center space-x-1.5"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> <span>Free Sandbox Access</span></span>
+                    <span class="flex items-center space-x-1.5"><span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> <span>Real-time Webhooks</span></span>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 enterprise-card rounded-2xl p-6 bg-slate-900 text-white flex flex-col justify-between min-h-[340px]">
+                <div>
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+                        <h3 class="text-xs font-mono uppercase tracking-wider text-slate-400">// Visual Ledger Balancing</h3>
+                        <span id="chart-status" class="text-[9px] font-mono uppercase tracking-widest text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">Awaiting Target</span>
+                    </div>
+                    <div class="w-full h-36 bg-slate-950/60 rounded-xl relative overflow-hidden border border-slate-800 flex items-center justify-center">
+                        <canvas id="graphCanvas" class="w-full h-full absolute inset-0 z-10"></canvas>
+                        <div id="canvas-hint" class="text-[10px] font-mono text-slate-600 z-0 select-none">DATA PIPELINE IDLE</div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-2 pt-4 border-t border-slate-800 text-center">
+                    <div>
+                        <span class="text-lg font-bold text-indigo-400 block">&lt; 2s</span>
+                        <span class="text-[9px] font-mono uppercase tracking-wider text-slate-500">Latency</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold text-indigo-400 block">100%</span>
+                        <span class="text-[9px] font-mono uppercase tracking-wider text-slate-500">Accuracy</span>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold text-indigo-400 block">0</span>
+                        <span class="text-[9px] font-mono uppercase tracking-wider text-slate-500">Drops</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="simulator" class="space-y-8 border-t border-slate-200/80 pt-16">
+            <div class="space-y-2">
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-600 block">Unified Accounting Connectors</span>
+                <h2 class="text-2xl font-extrabold tracking-tight text-slate-900">Live API Ingestion Layer Simulator</h2>
+                <p class="text-xs text-slate-400">Select an accounting ecosystem target platform to dynamically configure your environment routing headers.</p>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl">
+                <div>
+                    <input type="radio" id="ledger-qbo" name="target_ledger" value="qbo" checked class="hidden ledger-radio" onchange="switchTargetEnvironment('qbo', 'QuickBooks Online')">
+                    <label for="ledger-qbo" class="ledger-label border border-slate-200 bg-white hover:border-slate-300 p-4 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition space-y-2 select-none">
+                        <div class="h-8 w-8 bg-emerald-500 text-white rounded-lg flex items-center justify-center font-bold text-sm">qb</div>
+                        <span class="text-xs font-semibold text-slate-800">QuickBooks</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="ledger-xero" name="target_ledger" value="xero" class="hidden ledger-radio" onchange="switchTargetEnvironment('xero', 'Xero Core')">
+                    <label for="ledger-xero" class="ledger-label border border-slate-200 bg-white hover:border-slate-300 p-4 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition space-y-2 select-none">
+                        <div class="h-8 w-8 bg-sky-500 text-white rounded-lg flex items-center justify-center font-bold text-sm">X</div>
+                        <span class="text-xs font-semibold text-slate-800">Xero Core</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="ledger-zoho" name="target_ledger" value="zoho" class="hidden ledger-radio" onchange="switchTargetEnvironment('zoho', 'Zoho Books')">
+                    <label for="ledger-zoho" class="ledger-label border border-slate-200 bg-white hover:border-slate-300 p-4 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition space-y-2 select-none">
+                        <div class="h-8 w-8 bg-amber-500 text-white rounded-lg flex items-center justify-center font-bold text-sm">Z</div>
+                        <span class="text-xs font-semibold text-slate-800">Zoho Books</span>
+                    </label>
+                </div>
+                <div>
+                    <input type="radio" id="ledger-tally" name="target_ledger" value="tally" class="hidden ledger-radio" onchange="switchTargetEnvironment('tally', 'Tally ERP Gateway')">
+                    <label for="ledger-tally" class="ledger-label border border-slate-200 bg-white hover:border-slate-300 p-4 rounded-xl flex flex-col items-center justify-center text-center cursor-pointer transition space-y-2 select-none">
+                        <div class="h-8 w-8 bg-red-500 text-white rounded-lg flex items-center justify-center font-bold text-sm">T</div>
+                        <span class="text-xs font-semibold text-slate-800">Tally ERP</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mt-6">
+                <div class="lg:col-span-4 enterprise-card rounded-2xl p-6 flex flex-col justify-between space-y-6">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-2 mb-2">
+                            <span class="text-[10px] font-mono uppercase text-slate-400 tracking-wider">// Active Endpoint Context</span>
+                            <span id="active-ledger-badge" class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">QuickBooks Online</span>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Invoice Reference Handle</label>
+                            <input id="ui-invoice" type="text" value="INV-AI-2026-X88" class="input-box w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-800" />
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Amount (USD)</label>
+                            <input id="ui-amount" type="number" value="1450.75" class="input-box w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-800" />
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Target Customer Identity</label>
+                            <input id="ui-vendor" type="text" value="Amy's Bird Sanctuary" class="input-box w-full px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-800" />
+                        </div>
+                    </div>
+                    <button id="route-btn" onclick="triggerDashboardIngest()" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider py-4 px-4 rounded-xl transition duration-200">
+                        ⚡ Route Payload To Ledger
+                    </button>
+                </div>
+
+                <div class="lg:col-span-8 enterprise-card rounded-2xl overflow-hidden flex flex-col bg-slate-950 text-slate-300 border border-slate-900">
+                    <div class="bg-slate-900 px-6 py-4 flex items-center justify-between border-b border-slate-800">
+                        <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">Network Monitor // reetai-api-stream.log</span>
+                        <div class="flex space-x-1">
+                            <span class="h-1.5 w-1.5 rounded-full bg-slate-700"></span>
+                            <span class="h-1.5 w-1.5 rounded-full bg-slate-700"></span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex-grow min-h-[260px] mono-font text-xs space-y-3 overflow-y-auto">
+                        <div id="log-initial-text" class="text-slate-500 font-normal">// API Gateway synchronized. Select your destination platform, adjust parameters and click route...</div>
+                        <div id="ui-terminal" class="text-indigo-400 whitespace-pre-wrap leading-relaxed"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="space-y-8 border-t border-slate-200/80 pt-16">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-600 block">Flexible Architecture Plans</span>
+                <h2 class="text-3xl font-extrabold tracking-tight text-slate-900">Choose Your Execution Mode</h2>
+                <p class="text-xs text-slate-400 font-normal leading-relaxed">Unlock advanced parsing variables, automated receipt extraction layers, and dedicated API environment channels.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+                <div class="enterprise-card rounded-2xl p-8 flex flex-col justify-between space-y-8">
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-slate-400 block">01 / Developer Sandbox</span>
+                        <h3 class="text-xl font-bold text-slate-900">Free Tier Evaluation</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">Perfect for testing local connections, building prototype drivers, and executing manual mock invoice ingestion sweeps into sandbox ledgers.</p>
+                        <ul class="text-xs space-y-2.5 pt-2 text-slate-600 font-medium">
+                            <li class="flex items-center space-x-2"><span class="text-indigo-600">✔</span> <span>Up to 100 manual webhook pings / mo</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-indigo-600">✔</span> <span>Standard QuickBooks Online API Sync</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-indigo-600">✔</span> <span>Basic single-user credential tracking</span></li>
+                        </ul>
+                    </div>
+                    <a href="https://calendly.com/reetai-sync/30min" target="_blank" class="w-full text-center bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-xl font-bold text-xs tracking-wider uppercase transition">
+                        Request Sandbox Access
+                    </a>
+                </div>
+
+                <div class="enterprise-card rounded-2xl p-8 flex flex-col justify-between space-y-8 border-2 border-indigo-600 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-indigo-600 text-white text-[9px] font-mono uppercase tracking-widest font-bold px-3 py-1 rounded-bl-lg">RECOMMENDED</div>
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-mono uppercase tracking-widest text-indigo-500 block">02 / Enterprise Automated Production</span>
+                        <h3 class="text-xl font-bold text-slate-900">AI Ingest Pro</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed font-light">For high-throughput transaction flows. Integrates automated OCR extraction, unstructured file mapping models, and live multi-company production registries.</p>
+                        <ul class="text-xs space-y-2.5 pt-2 text-slate-600 font-medium">
+                            <li class="flex items-center space-x-2"><span class="text-indigo-600">✔</span> <span><strong>Unlimited</strong> transaction uploads</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-indigo-600">✔</span> <span><strong>Autonomous AI Extraction Core</strong> (Unstructured ➡️ JSON)</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-indigo-600">✔</span> <span>Automated multi-currency & asset account matching</span></li>
+                            <li class="flex items-center space-x-2"><span class="text-indigo-600">✔</span> <span>Dedicated production instance container routing</span></li>
+                        </ul>
+                    </div>
+                    <a href="https://calendly.com/reetai-sync/30min" target="_blank" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 rounded-xl font-bold text-xs tracking-wider uppercase transition shadow-md shadow-indigo-600/10">
+                        Contact Sales // Upgrade
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="capabilities" class="border-t border-slate-200/80 pt-16 pb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="space-y-3">
+                    <span class="text-[10px] font-mono text-slate-400 block">METHODOLOGY / 01</span>
+                    <h4 class="text-sm font-bold tracking-tight text-slate-900">Advanced QBO API Integration</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-normal">
+                        Bypass the friction of handling strict Intuit accounting database limits. Our platform establishes absolute structural data alignment natively across every data write.
+                    </p>
+                </div>
+                <div class="space-y-3">
+                    <span class="text-[10px] font-mono text-slate-400 block">INTELLIGENCE / 02</span>
+                    <h4 class="text-sm font-bold tracking-tight text-slate-900">Autonomous AI Extraction</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-normal">
+                        Ingest complex, unformatted financial records from external apps. Our software automatically normalizes, sanitizes, and prepares data structures using deep AI file parsing models.
+                    </p>
+                </div>
+                <div class="space-y-3">
+                    <span class="text-[10px] font-mono text-slate-400 block">COMPLIANCE / 03</span>
+                    <h4 class="text-sm font-bold tracking-tight text-slate-900">OAuth 2.0 Session Persistence</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed font-normal">
+                        Rely on robust system design logic. ReetAI handles security handshakes and live token distributing vectors behind the scenes with absolute uptime.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="w-full max-w-7xl mx-auto px-8 py-10 flex flex-col sm:flex-row justify-between items-center text-[10px] font-mono tracking-widest text-slate-400 border-t border-slate-200/60 gap-4">
+        <div>&copy; 2026 REETAI ENTERPRISE SOLUTIONS INC. PARTNER COMPLIANT PORTALS.</div>
+        <div class="flex space-x-10">
+            <a href="#" class="hover:text-slate-900 transition-colors">DOCUMENTATION</a>
+            <a href="#" class="hover:text-slate-900 transition-colors">API STATUS</a>
+            <a href="#" class="hover:text-slate-900 transition-colors">SYSTEM SECURITY</a>
+        </div>
+    </footer>
+
+    <script>
+        // --- GOOGLE SIGN IN IDENTITY SERVICE LAYER ---
+        const GOOGLE_CLIENT_ID = "967031125982-qph6feq003hjk5f0bk3arsnovq3vd22g.apps.googleusercontent.com";
+
+        window.onload = function () {
+            if (window.google && google.accounts && google.accounts.id) {
+                google.accounts.id.initialize({
+                    client_id: GOOGLE_CLIENT_ID,
+                    callback: handleGoogleAuthCallback,
+                    context: "signin",
+                    ux_mode: "popup", 
+                    auto_prompt: false
+                });
+            } else {
+                console.error("Google Identity Services script failed to download or process onto page frames.");
+            }
+            
+            resizeCanvas();
+        };
+
+        function handleAuthClick() {
+            if (window.google && google.accounts && google.accounts.id) {
+                try {
+                    const tokenClient = google.accounts.oauth2.initTokenClient({
+                        client_id: GOOGLE_CLIENT_ID,
+                        scope: 'openid profile email',
+                        callback: (tokenResponse) => {
+                            if (tokenResponse && tokenResponse.access_token) {
+                                console.log("OAuth2 access token generated successfully.");
+                                handleTokenClientSuccess(tokenResponse.access_token);
+                            }
+                        }
+                    });
+                    
+                    tokenClient.requestAccessToken();
+                } catch (err) {
+                    console.warn("InitTokenClient fallback window routine executing via classic profile prompts.");
+                    google.accounts.id.prompt();
+                }
+            } else {
+                alert("Google script layer initializing... please check your network connection rules.");
+            }
+        }
+
+        // Toggles the drop overlay view frame state safely
+        function toggleAuthDropdown(event) {
+            event.stopPropagation(); // Prevents instant closing via standard window background event bubbling
+            const menu = document.getElementById('auth-dropdown-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+
+        // Auto-dismiss script logic when users select context regions elsewhere
+        window.addEventListener('click', function(e) {
+            const menu = document.getElementById('auth-dropdown-menu');
+            const button = document.getElementById('profile-badge-btn');
+            if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target) && e.target !== button) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        function handleSignOut() {
+            if (window.google && google.accounts && google.accounts.id) {
+                google.accounts.id.disableAutoSelect();
+            }
+
+            // Restore initial default structural Sign In action node state completely
+            const container = document.getElementById('auth-container');
+            if (container) {
+                container.innerHTML = `
+                    <button id="auth-btn" onclick="handleAuthClick()" class="text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-full bg-slate-900 text-white hover:bg-slate-800 transition duration-150 shadow-md"> 
+                        Sign In
+                    </button>
+                `;
+            }
+
+            const terminal = document.getElementById('ui-terminal');
+            if (terminal) {
+                terminal.innerHTML += `\n\n🔒 [AUTH SERVICE] Session disconnected. Access authentication headers cleared.`;
+            }
+        }
+
+        function parseJwtPayload(token) {
+            try {
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+                return JSON.parse(jsonPayload);
+            } catch (e) {
+                console.error("Payload parse vector structural validation failure.", e);
+                return null;
+            }
+        }
+
+        function handleGoogleAuthCallback(response) {
+            const encodedJwtToken = response.credential;
+            const userProfile = parseJwtPayload(encodedJwtToken);
+            updateTerminalWithUserData(userProfile);
+            updateNavbarGreeting(userProfile);
+            forwardTokenToBackend(encodedJwtToken);
+        }
+
+        async function handleTokenClientSuccess(accessToken) {
+            const terminal = document.getElementById('ui-terminal');
+            try {
+                const res = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`);
+                const profileData = await res.json();
+                
+                const userObj = {
+                    name: profileData.name,
+                    email: profileData.email,
+                    sub: profileData.sub
+                };
+
+                updateTerminalWithUserData(userObj);
+                updateNavbarGreeting(userObj);
+            } catch (err) {
+                if(terminal) terminal.innerHTML += `\n❌ Failed pulling user details over current active token link channel.`;
+            }
+        }
+
+        // Custom built white premium dropdown widget mapping platform design specifications
+        function updateNavbarGreeting(userProfile) {
+            if (userProfile && userProfile.name) {
+                const container = document.getElementById('auth-container');
+                if (container) {
+                    const firstName = userProfile.name.split(' ')[0];
+                    const fullName = userProfile.name;
+                    
+                    container.innerHTML = `
+                        <button id="profile-badge-btn" onclick="toggleAuthDropdown(event)" class="text-xs font-bold uppercase tracking-wider px-6 py-3.5 rounded-full bg-slate-900 border border-slate-900 text-white hover:bg-slate-800 flex items-center space-x-2.5 transition duration-150 shadow-sm select-none">
+                            <span>Hi, ${firstName}</span>
+                            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        
+                        <div id="auth-dropdown-menu" class="hidden absolute right-0 mt-3 w-72 rounded-2xl bg-white border border-slate-200/80 shadow-2xl overflow-hidden z-50 transition-all">
+                            
+                            <div class="p-4 pb-0">
+    <div class="flex items-center space-x-3 mb-4">
+        <div class="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200 text-slate-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        </div>
+        <span class="text-sm font-bold text-slate-900 tracking-wide truncate">${fullName}</span>
+    </div>
+    
+    <!-- Changed bg-slate-900 to bg-blue-600 and hover:bg-slate-800 to hover:bg-blue-700 -->
+    <button class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold py-2.5 rounded-full transition duration-150 shadow-sm mb-4">
+        View profile
+    </button>
+</div>
+
+                            
+                            <div class="px-4 py-2 border-t border-slate-100">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Account</span>
+                                <div class="space-y-0.5">
+                                    <button class="w-full text-left py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 transition">Manage Subscription</button>
+                                    <button class="w-full text-left py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-a900 transition">Settings & Privacy</button>
+                                    <button class="w-full text-left py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 transition">Help</button>
+                                    <button class="w-full text-left py-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 transition mb-2">Language</button>
+                                </div>
+                            </div>
+                            
+                            <button onclick="handleSignOut()" class="w-full text-left px-4 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white flex items-center justify-between transition duration-150 group border-t border-slate-800">
+                                <span class="text-xs font-bold tracking-wide">Sign Out</span>
+                                <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function updateTerminalWithUserData(userProfile) {
+            if (userProfile) {
+                const terminal = document.getElementById('ui-terminal');
+                const initialText = document.getElementById('log-initial-text');
+                
+                if (initialText) initialText.style.display = 'none';
+                
+                if (terminal) {
+                    terminal.innerHTML += `\n\n🔑 [AUTH SERVICE] Secure Identity Handshake Verified.`;
+                    terminal.innerHTML += `\n👤 Account Entity: ${userProfile.name} (${userProfile.email})`;
+                    terminal.innerHTML += `\n🛡️ Principal Routing Identifier: ${userProfile.sub || userProfile.id}`;
+                    terminal.innerHTML += `\n📡 Syncing authentication headers across distributed session endpoints...`;
+                }
+            }
+        }
+
+        async function forwardTokenToBackend(jwtToken) {
+            try {
+                await fetch('/api/v1/auth/google', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: jwtToken })
+                });
+            } catch (err) {
+                console.error("Express middleware delivery pipeline offline mapping state handles.");
+            }
+        }
+
+        // --- DYNAMIC HERO CONTENT CONTEXT DATA STRATEGIES ---
+        const LEDGER_CONTENT_PROPIES = {
+            'qbo': {
+                headline: "QuickBooks API<br>Integration Platform.",
+                subtext: "Build QuickBooks integrations in minutes, not months. One API layer platform to sync transaction ledger arrays, automate data extraction mappings, and write records seamlessly with absolute structural integrity."
+            },
+            'xero': {
+                headline: "Xero Core API<br>Integration Platform.",
+                subtext: "Streamline your Xero accounting loops natively. Sync customer sales fields, write clean multi-line tracking vectors, and eliminate manual transaction bookkeeping errors automatically."
+            },
+            'zoho': {
+                headline: "Zoho Books API<br>Integration Platform.",
+                subtext: "Deploy robust Indian GST or global compliance routines straight into Zoho Books. Balance vendor arrays on the fly and package incoming billing files across clean REST vectors."
+            },
+            'tally': {
+                headline: "Tally ERP API<br>Integration Platform.",
+                subtext: "Bridge cloud software parameters straight into local Tally instances via secure XML data packaging blocks, bypassing data sync dropouts with zero architecture friction."
+            }
+        };
+
+        function switchTargetEnvironment(ledgerCode, platformName) {
+            const badge = document.getElementById('active-ledger-badge');
+            if(badge) badge.innerText = platformName;
+
+            const targetedMeta = LEDGER_CONTENT_PROPIES[ledgerCode];
+            if (targetedMeta) {
+                document.getElementById('main-hero-headline').innerHTML = targetedMeta.headline;
+                document.getElementById('main-hero-subtext').innerText = targetedMeta.subtext;
+            }
+        }
+
+        // --- MASTER GRAPH CANVAS CHART CORE ANIMATION ENGINE ---
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            if (!canvas) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            drawStaticBaseline();
+        }
+        
+        function drawStaticBaseline() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(79, 70, 229, 0.2)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+        }
+        
+        function animateDataVectorWave() {
+            let progress = 0;
+            const hint = document.getElementById('canvas-hint');
+            const status = document.getElementById('chart-status');
+            
+            if(hint) hint.style.display = 'none';
+            if(status) {
+                status.innerText = "Syncing Router";
+                status.className = "text-[9px] font-mono uppercase tracking-widest text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20 animate-pulse";
+            }
+            
+            function step() {
+                progress += 4;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+                ctx.lineWidth = 1;
+                for (let i = 20; i < canvas.height; i += 20) {
+                    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+                }
+                
+                ctx.strokeStyle = '#6366f1';
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#6366f1';
+                ctx.beginPath();
+                
+                for (let x = 0; x < progress && x < canvas.width; x++) {
+                    const y = (canvas.height / 2) + Math.sin(x * 0.04) * 30 * Math.sin(progress * 0.01);
+                    if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                
+                if (progress < canvas.width) {
+                    requestAnimationFrame(step);
+                } else {
+                    if(status) {
+                        status.innerText = "Balanced";
+                        status.className = "text-[9px] font-mono uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20";
+                    }
+                    ctx.fillStyle = '#10b981';
+                    ctx.beginPath();
+                    ctx.arc(canvas.width - 10, canvas.height / 2, 5, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+            requestAnimationFrame(step);
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+
+        // --- BACKEND INGESTION DATA HANDLER VIA ABSTRACTION ENDPOINTS ---
+        async function triggerDashboardIngest() {
+            const button = document.getElementById('route-btn');
+            const terminal = document.getElementById('ui-terminal');
+            const initialText = document.getElementById('log-initial-text');
+            
+            if (!button || !terminal) return;
+
+            const originalText = button.innerHTML;
+            button.innerHTML = '⚡ PROCESSING INGESTION LAYER...';
+            button.disabled = true;
+
+            const invoice = document.getElementById('ui-invoice').value || 'INV-AI-2026-X88';
+            const amount = parseFloat(document.getElementById('ui-amount').value) || 1450.75;
+            const vendor = document.getElementById('ui-vendor').value || "Amy's Bird Sanctuary";
+            
+            const checkedRadio = document.querySelector('input[name="target_ledger"]:checked');
+            const activeLedgerStrategyInput = checkedRadio ? checkedRadio.value : 'qbo';
+            
+            if(initialText) initialText.style.display = 'none';
+            
+            terminal.innerHTML += `\n\n⏳ [API LAYER] Intercepting data vectors for route: ${activeLedgerStrategyInput.toUpperCase()}...\n📡 Forwarding structured parameters across secure abstraction mappings...`;
+            
+            animateDataVectorWave();
+            
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_route_payload', {
+                    'event_category': 'Engagement',
+                    'event_label': vendor,
+                    'value': amount
+                });
+            }
+            
+            try {
+                const payload = {
+                    invoice_id: invoice,
+                    amount: amount,
+                    vendor_name: vendor
+                };
+
+                const response = await fetch('/api/v1/ingest', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'x-target-ledger': activeLedgerStrategyInput
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                terminal.innerHTML += `\n✅ Ingestion successful. Records created under strategy schema.`;
+            } catch (err) {
+                terminal.innerHTML += `\n❌ System pipeline response simulation handled code safely mapping mock objects offline.`;
+            } finally {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>

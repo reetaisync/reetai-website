@@ -1,0 +1,26 @@
+{
+  "name": "reetai-website",
+  "version": "1.0.0",
+  "description": "Official ReetAI website",
+  "main": "app.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "setup": "node scripts/createConstructionTables.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "google-auth-library": "^10.7.0",
+    "sqlite3": "^6.0.1"
+  },
+  "author": "ReetAI Enterprise",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

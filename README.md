@@ -121,7 +121,7 @@ This repository contains the source code for the official ReetAI website.
 For additional projects, visit:
 
 - 🌐 https://reetai.in
-- 💼 https://www.linkedin.com/company/131894011
+- 💼 https://www.linkedin.com/company/reetai
 - 💻 https://github.com/reetaisync
 
 ---
